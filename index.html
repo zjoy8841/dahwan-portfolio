@@ -124,9 +124,16 @@
   .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
   .tags span{font-size:.74rem;color:var(--dim);border:1px solid var(--border);padding:4px 10px;border-radius:8px}
 
+  /* wide split card */
+  .split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);min-height:100%}
+  .split .card-media{aspect-ratio:auto;min-height:300px}
+  .split .card-body{justify-content:center}
+
   @media(max-width:860px){
     .card,.card.feature{grid-column:span 12}
     .card.tall .card-media{aspect-ratio:16/11}
+    .split{grid-template-columns:1fr}
+    .split .card-media{aspect-ratio:16/10;min-height:0}
   }
 
   /* ARCHIVE */
@@ -358,9 +365,9 @@
       </article>
 
       <article class="card wide reveal">
-        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);min-height:100%" class="split">
-          <div class="card-media" style="aspect-ratio:auto"><img src="assets/insurance-erp.png" alt="보험 ERP 수수료 시스템" /></div>
-          <div class="card-body" style="justify-content:center">
+        <div class="split">
+          <div class="card-media"><img src="assets/insurance-erp.png" alt="보험 ERP 수수료 시스템" /></div>
+          <div class="card-body">
             <div class="card-meta"><span class="chip">엔터프라이즈</span><span>엘자산·한솔·노블리지 외</span><span>·</span><span>2015 ~ 2017</span></div>
             <h3>보험사 ERP · 수수료 시스템</h3>
             <div class="role">기획 100%</div>
