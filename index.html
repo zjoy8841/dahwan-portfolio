@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>오다환 · AI를 무기로 쓰는 서비스 기획자</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --bg:#08090d;
+    --bg-2:#0d0f16;
+    --panel:rgba(255,255,255,.045);
+    --panel-strong:rgba(255,255,255,.07);
+    --border:rgba(255,255,255,.09);
+    --border-hi:rgba(255,255,255,.16);
+    --ink:#eef1f7;
+    --muted:#a2a9ba;
+    --dim:#6f7688;
+    --cyan:#54e0e6;
+    --violet:#a488ff;
+    --grad:linear-gradient(100deg,#54e0e6 0%,#7cc7ff 45%,#a488ff 100%);
+    --radius:20px;
+    --maxw:1180px;
+    --font:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,"Malgun Gothic",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font);
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* ambient aurora background */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;
+    background:
+      radial-gradient(60% 50% at 78% 8%, rgba(164,136,255,.14), transparent 60%),
+      radial-gradient(55% 45% at 12% 22%, rgba(84,224,230,.10), transparent 60%),
+      radial-gradient(70% 60% at 50% 110%, rgba(124,199,255,.08), transparent 60%),
+      var(--bg);
+  }
+  body::after{
+    content:"";position:fixed;inset:0;z-index:-1;opacity:.35;pointer-events:none;
+    background-image:radial-gradient(rgba(255,255,255,.045) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(circle at 50% 30%, #000 0%, transparent 75%);
+  }
+  a{color:inherit;text-decoration:none}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+
+  /* NAV */
+  header.nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(14px);
+    background:rgba(8,9,13,.6);border-bottom:1px solid var(--border)}
+  .nav-in{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-weight:800;letter-spacing:-.02em;font-size:1.05rem}
+  .logo span{font-weight:500;color:var(--muted)}
+  nav.menu{display:flex;gap:28px;font-size:.9rem;color:var(--muted)}
+  nav.menu a{transition:color .2s}
+  nav.menu a:hover{color:var(--ink)}
+  .nav-cta{font-size:.85rem;padding:9px 16px;border:1px solid var(--border-hi);
+    border-radius:999px;color:var(--ink);transition:.2s;background:var(--panel)}
+  .nav-cta:hover{background:var(--panel-strong);border-color:var(--cyan)}
+  @media(max-width:760px){nav.menu{display:none}}
+
+  /* HERO */
+  .hero{position:relative;min-height:92vh;display:flex;align-items:center;overflow:hidden}
+  .hero-img{position:absolute;inset:0;z-index:0}
+  .hero-img img{width:100%;height:100%;object-fit:cover;object-position:70% center;opacity:.9}
+  .hero-img::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,var(--bg) 12%,rgba(8,9,13,.72) 42%,rgba(8,9,13,.15) 78%,rgba(8,9,13,.55) 100%)}
+  .hero-in{position:relative;z-index:2;width:100%}
+  .eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.82rem;color:var(--muted);
+    border:1px solid var(--border);background:var(--panel);padding:7px 15px;border-radius:999px;margin-bottom:26px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px var(--cyan)}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.6rem);line-height:1.06;letter-spacing:-.035em;font-weight:800}
+  .hero h1 .sub{display:block;font-size:clamp(1.05rem,2.4vw,1.6rem);font-weight:600;color:var(--muted);
+    letter-spacing:-.02em;margin-top:20px;line-height:1.45}
+  .hero p.lede{margin-top:26px;max-width:560px;color:var(--muted);font-size:1.05rem}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
+  .btn{padding:13px 24px;border-radius:999px;font-weight:600;font-size:.95rem;transition:.22s;border:1px solid transparent}
+  .btn.primary{background:var(--grad);color:#06131a;box-shadow:0 8px 30px -8px rgba(84,224,230,.5)}
+  .btn.primary:hover{transform:translateY(-2px);box-shadow:0 14px 40px -8px rgba(124,180,255,.6)}
+  .btn.ghost{border-color:var(--border-hi);color:var(--ink);background:var(--panel)}
+  .btn.ghost:hover{border-color:var(--cyan);background:var(--panel-strong)}
+
+  /* SECTION */
+  section{padding:100px 0}
+  .sec-head{margin-bottom:52px;max-width:720px}
+  .sec-tag{font-size:.82rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sec-head h2{font-size:clamp(1.8rem,3.6vw,2.7rem);letter-spacing:-.03em;font-weight:800;margin-top:14px}
+  .sec-head p{color:var(--muted);margin-top:16px;font-size:1.05rem}
+
+  /* PROJECT GRID (bento) */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:22px}
+  .card{grid-column:span 6;background:var(--panel);border:1px solid var(--border);
+    border-radius:var(--radius);overflow:hidden;position:relative;transition:.3s;
+    display:flex;flex-direction:column}
+  .card:hover{border-color:var(--border-hi);transform:translateY(-4px);
+    box-shadow:0 24px 60px -30px rgba(124,180,255,.4)}
+  .card.feature{grid-column:span 6}
+  .card.wide{grid-column:span 12}
+  .card-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-2)}
+  .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
+  .card:hover .card-media img{transform:scale(1.05)}
+  .card-media::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg,transparent 55%,rgba(8,9,13,.55) 100%)}
+  .card.tall .card-media{aspect-ratio:9/13}
+  .card-body{padding:26px 26px 28px;flex:1;display:flex;flex-direction:column}
+  .card-meta{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;font-size:.78rem;color:var(--dim)}
+  .chip{font-size:.72rem;padding:4px 11px;border-radius:999px;border:1px solid var(--border);
+    color:var(--muted);background:rgba(255,255,255,.03)}
+  .chip.ai{border-color:rgba(84,224,230,.4);color:var(--cyan);background:rgba(84,224,230,.06)}
+  .card h3{font-size:1.32rem;letter-spacing:-.02em;font-weight:700;line-height:1.3}
+  .card .role{font-size:.83rem;color:var(--dim);margin-top:6px}
+  .card .desc{color:var(--muted);font-size:.96rem;margin-top:16px}
+  .card .desc b{color:var(--ink);font-weight:600}
+  .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}
+  .tags span{font-size:.74rem;color:var(--dim);border:1px solid var(--border);padding:4px 10px;border-radius:8px}
+
+  @media(max-width:860px){
+    .card,.card.feature{grid-column:span 12}
+    .card.tall .card-media{aspect-ratio:16/11}
+  }
+
+  /* ARCHIVE */
+  .archive{position:relative;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);
+    background:var(--bg-2)}
+  .archive-bg{position:absolute;inset:0;z-index:0}
+  .archive-bg img{width:100%;height:100%;object-fit:cover;opacity:.5}
+  .archive-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(8,9,13,.75),rgba(8,9,13,.88))}
+  .archive-in{position:relative;z-index:2;padding:48px 40px}
+  .archive-in h3{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;margin-bottom:6px}
+  .archive-in .note{color:var(--muted);font-size:.95rem;margin-bottom:34px}
+  .tl{display:grid;grid-template-columns:repeat(2,1fr);gap:12px 40px}
+  .tl-item{display:flex;gap:16px;padding:13px 0;border-bottom:1px solid var(--border)}
+  .tl-year{font-variant-numeric:tabular-nums;font-weight:700;color:var(--cyan);font-size:.9rem;min-width:96px;flex-shrink:0}
+  .tl-body{font-size:.92rem}
+  .tl-body .t{font-weight:600}
+  .tl-body .c{color:var(--dim);font-size:.82rem;margin-top:2px}
+  @media(max-width:760px){.tl{grid-template-columns:1fr;gap:0}.archive-in{padding:34px 22px}}
+
+  /* ABOUT / SKILLS */
+  .about-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:30px}
+  .about-card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);padding:34px}
+  .about-card h3{font-size:1.15rem;font-weight:700;margin-bottom:18px}
+  .about-card p{color:var(--muted);font-size:1rem}
+  .about-card p+p{margin-top:14px}
+  .about-card b{color:var(--ink);font-weight:600}
+  .skill-group{margin-bottom:22px}
+  .skill-group:last-child{margin-bottom:0}
+  .skill-group .lbl{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
+  .pills{display:flex;gap:9px;flex-wrap:wrap}
+  .pill{font-size:.86rem;padding:8px 15px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted)}
+  .pill.hot{border-color:transparent;background:linear-gradient(100deg,rgba(84,224,230,.16),rgba(164,136,255,.16));color:var(--ink);font-weight:600}
+  @media(max-width:860px){.about-grid{grid-template-columns:1fr}}
+
+  /* CONTACT */
+  .contact{text-align:center;padding:110px 0 90px}
+  .contact h2{font-size:clamp(2rem,5vw,3.2rem);letter-spacing:-.03em;font-weight:800;line-height:1.15}
+  .contact p{color:var(--muted);margin:22px auto 38px;max-width:520px;font-size:1.08rem}
+  .contact .mail{display:inline-flex;align-items:center;gap:12px;font-size:1.15rem;font-weight:600;
+    padding:16px 30px;border-radius:999px;border:1px solid var(--border-hi);background:var(--panel);transition:.22s}
+  .contact .mail:hover{border-color:var(--cyan);background:var(--panel-strong);transform:translateY(-2px)}
+
+  footer{border-top:1px solid var(--border);padding:34px 0;color:var(--dim);font-size:.85rem}
+  .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-in">
+    <div class="logo">오다환 <span>· Service Planner</span></div>
+    <nav class="menu">
+      <a href="#ai">AI 기획</a>
+      <a href="#public">공공·데이터</a>
+      <a href="#more">주요 프로젝트</a>
+      <a href="#archive">경력</a>
+      <a href="#about">소개</a>
+    </nav>
+    <a class="nav-cta" href="#contact">연락하기</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-img"><img src="assets/hero.png" alt="" /></div>
+  <div class="wrap hero-in">
+    <span class="eyebrow"><span class="dot"></span> AI DATA · 전략기획팀 책임연구원</span>
+    <h1>AI를 무기로 쓰는<br /><span class="grad-text">서비스 기획자</span>
+      <span class="sub">데이터로 판단하고, AI로 만들고, 결과로 증명합니다.<br />헬스케어·금융·교육을 넘나든 10년 차 기획자 오다환입니다.</span>
+    </h1>
+    <div class="hero-actions">
+      <a class="btn primary" href="#ai">AI 프로젝트 보기</a>
+      <a class="btn ghost" href="#contact">연락하기</a>
+    </div>
+  </div>
+</section>
+
+<!-- AI 기획 -->
+<section id="ai">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">AI Planning</div>
+      <h2>AI를 활용하고, AI 제품을 기획합니다</h2>
+      <p>AI를 유행어로 소비하지 않습니다. 매일의 기획 도구로 쓰고, AI가 핵심인 제품을 직접 설계해 왔습니다.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card feature reveal">
+        <div class="card-media"><img src="assets/life-os-one.png" alt="Life OS.ONE" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip ai">AI 프로덕트</span><span>AI DATA</span><span>·</span><span>2026.05 ~</span></div>
+          <h3>Life OS.ONE — 초개인화 AI 생활 운영체제</h3>
+          <div class="role">자체 신규 프로덕트 · 0→1 기획 · PM/기획 100%</div>
+          <p class="desc">실생활 데이터를 근거로 아침·점심·저녁을 대화로 잇는 <b>LLM 기반 생활 비서 앱</b>을 0에서 기획. 메인을 <b>대화형 타임라인 UX</b>로 설계하고, Figma·Notion을 단일 기준(SSoT)으로 운영해 <b>클로즈 베타 시연</b>까지 이끌었습니다.</p>
+          <div class="tags"><span>대화형 UX</span><span>LLM</span><span>Figma</span><span>Notion SSoT</span><span>Claude Code</span></div>
+        </div>
+      </article>
+
+      <article class="card feature reveal">
+        <div class="card-media"><img src="assets/ai-automation.png" alt="사내 AI 자동화" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip ai">AI 워크플로</span><span>AI DATA</span><span>·</span><span>2025.08 ~</span></div>
+          <h3>사내 기획 자동화 — wireFrame Automation</h3>
+          <div class="role">AI 기반 기획 생산성 체계 구축 · 기획 100%</div>
+          <p class="desc"><b>Claude Code로 HTML 와이어프레임을 직접 생성</b>해 Figma로 연동하는 워크플로를 구축. 사람과 AI가 함께 읽는 <b>단일 기준문서(LLM Wiki)</b> 체계로 여러 공공 SI 프로젝트를 <b>동시에 소화하는 생산성</b>을 만들었습니다.</p>
+          <div class="tags"><span>Claude Code</span><span>LLM Wiki</span><span>자동화</span><span>Figma</span></div>
+        </div>
+      </article>
+
+      <article class="card feature reveal">
+        <div class="card-media"><img src="assets/deepsales.png" alt="딥세일즈" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip ai">AI 매칭</span><span>딥세일즈</span><span>·</span><span>2022.07 ~</span></div>
+          <h3>딥세일즈 — B2B AI 고객 매칭</h3>
+          <div class="role">글로벌 데이터 서비스 · PM 100% · WireFrame 30%</div>
+          <p class="desc"><b>인공지능 학습으로 회원사에 가장 적합한 고객을 매칭</b>하는 글로벌 서비스. 글로벌 데이터 확보가 핵심이라 데이터·개발과 밀접히 협업했고, 미국 기준의 <b>글로벌 UXUI 스탠다드</b>에 맞춰 설계했습니다.</p>
+          <div class="tags"><span>AI 매칭</span><span>글로벌 UXUI</span><span>Axure</span><span>Figma</span></div>
+        </div>
+      </article>
+
+      <article class="card feature reveal">
+        <div class="card-media"><img src="assets/dencomm.png" alt="덴컴 음성인식 치과 차트" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip ai">음성 AI</span><span>덴컴</span><span>·</span><span>2022.09 ~ 2023.06</span></div>
+          <h3>음성인식 치과 차트 시스템</h3>
+          <div class="role">PM 100% · WireFrame 100%</div>
+          <p class="desc"><b>OpenAI Whisper 엔진 기반 음성인식</b>으로, 소규모 치과에서 추가 인력 없이 <b>의사 단독 차팅</b>이 가능하도록 기능을 기획. 현업 종사자의 사용성 증대에 초점을 맞췄습니다.</p>
+          <div class="tags"><span>OpenAI Whisper</span><span>음성인식</span><span>헬스케어</span><span>Axure</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 공공·데이터 -->
+<section id="public">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Public · Data</div>
+      <h2>공공 에듀테크와 데이터 플랫폼</h2>
+      <p>제안(RFP)부터 요구사항·화면설계·감리 대응·시험·매뉴얼까지, SI 전 주기를 실제 산출물로 만들어 왔습니다.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/sejong.png" alt="세종온라인학교" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">에듀테크 SI</span><span>AI DATA</span><span>·</span><span>2025.08 ~ 2026.01</span></div>
+          <h3>세종온라인학교 LMS 플랫폼 구축</h3>
+          <div class="role">프론트오피스 주요기능 기획 담당</div>
+          <p class="desc">교육과정·자원·시설·교강사 관리를 아우르는 온라인 학교 플랫폼. <b>학생·교사 주요기능 요구사항 분석과 기능 정의</b>, 화면설계서·UI 표준가이드, <b>설계감리 대응</b>, 인수시험계획서·운영자매뉴얼까지 담당했습니다.</p>
+          <div class="tags"><span>요구사항 정의</span><span>화면설계</span><span>UI 표준</span><span>감리 대응</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/semas.png" alt="소상공인시장진흥공단 데이터 플랫폼" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">데이터 플랫폼</span><span>AI DATA</span><span>·</span><span>2026.03 ~ 2026.04</span></div>
+          <h3>소상공인시장진흥공단 데이터 분석 플랫폼</h3>
+          <div class="role">대시보드·데이터 화면 기획</div>
+          <p class="desc">휴폐업·금융·매출 <b>지수 대시보드</b>와 원천데이터 <b>4단계 파이프라인</b>, 연구데이터 다운로드 승인 워크플로를 화면 단위로 기획. 지표 정의와 <b>시각화 해석 규칙</b>까지 세우고, LLM Wiki식 단일 기준문서로 결정·이슈를 체계 관리했습니다.</p>
+          <div class="tags"><span>데이터 시각화</span><span>대시보드</span><span>지표 정의</span><span>spec.md</span></div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 주요 프로젝트 -->
+<section id="more">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Selected Work</div>
+      <h2>폭넓게 쌓아온 주요 프로젝트</h2>
+      <p>헬스케어·금융·모빌리티·엔터프라이즈까지 — 낯설고 복잡한 도메인을 구조화해 온 경험입니다.</p>
+    </div>
+    <div class="grid">
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/aimmed.png" alt="에임메드 간병인 매칭" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">B2B2C</span><span>에임메드</span><span>·</span><span>2022.02 ~ 2022.11</span></div>
+          <h3>간병인 매칭 시스템</h3>
+          <div class="role">PM 100% · WireFrame 100%</div>
+          <p class="desc">기존 B2B 시스템과 신규 B2C 서비스, 사용자 앱까지 아우르는 <b>통합 시스템 설계</b>. 데이터와 서비스의 정확도 증대에 중점을 뒀습니다.</p>
+          <div class="tags"><span>통합 설계</span><span>매칭</span><span>앱 기획</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/influencer.png" alt="인플루언서 마케팅 플랫폼" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">마케팅 플랫폼</span><span>키스톤·윈썸</span><span>·</span><span>2020 ~ 2021</span></div>
+          <h3>인플루언서 마케팅 플랫폼 · ERP</h3>
+          <div class="role">기획 100%</div>
+          <p class="desc"><b>팔로워 분석</b>과 <b>캠페인 정산</b>이 핵심. 허수가 많은 인플루언서 정보를 정확히 판단할 빅데이터 통계를 노출하고, 개발팀과 스크럼으로 기능별 기획을 진행했습니다.</p>
+          <div class="tags"><span>빅데이터 통계</span><span>캠페인 정산</span><span>스크럼</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/kb-bank.png" alt="국민은행 비대면 채널" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">금융</span><span>인픽스 · 국민은행</span><span>·</span><span>2020</span></div>
+          <h3>국민은행 비대면 채널</h3>
+          <div class="role">서브 기획자 · 기획 15%</div>
+          <p class="desc">기존 UX를 해치지 않으면서 <b>비대면으로 고객을 응대하는 태블릿 시스템</b>을 기획. 창구에서 받던 서비스를 편안하게 비대면으로 옮기는 데 초점을 뒀습니다.</p>
+          <div class="tags"><span>금융 UX</span><span>비대면</span><span>태블릿</span></div>
+        </div>
+      </article>
+
+      <article class="card reveal">
+        <div class="card-media"><img src="assets/kia.png" alt="기아자동차 글로벌사이트 · 딜카앱" /></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="chip">모빌리티</span><span>인픽스</span><span>·</span><span>2018 ~ 2019</span></div>
+          <h3>기아자동차 글로벌사이트 · 딜카 App</h3>
+          <div class="role">글로벌 웹 · 모빌리티 앱 운영</div>
+          <p class="desc">대기업의 <b>체계화된 절차</b> 속에서 기아자동차 글로벌사이트와 현대캐피탈 딜카 앱 운영을 담당하며 B2C 서비스 기획을 익혔습니다.</p>
+          <div class="tags"><span>글로벌 웹</span><span>앱 운영</span><span>B2C</span></div>
+        </div>
+      </article>
+
+      <article class="card wide reveal">
+        <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);min-height:100%" class="split">
+          <div class="card-media" style="aspect-ratio:auto"><img src="assets/insurance-erp.png" alt="보험 ERP 수수료 시스템" /></div>
+          <div class="card-body" style="justify-content:center">
+            <div class="card-meta"><span class="chip">엔터프라이즈</span><span>엘자산·한솔·노블리지 외</span><span>·</span><span>2015 ~ 2017</span></div>
+            <h3>보험사 ERP · 수수료 시스템</h3>
+            <div class="role">기획 100%</div>
+            <p class="desc"><b>36개 보험사마다 다른 수수료 체계를 하나의 시스템에서 계산</b>하도록 설계한 수수료 엔진과 인사관리 ERP. 복잡한 수식이 필요한 시스템에서, 낯설고 어려운 문제를 어떻게 구조화해 푸는지를 배운 대표 경험입니다.</p>
+            <div class="tags"><span>복잡 수식 설계</span><span>ERP</span><span>수수료 엔진</span><span>인사관리</span></div>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section id="archive">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">Career Archive</div>
+      <h2>전체 경력</h2>
+      <p>2015년부터 SI·ERP·플랫폼을 거치며 매번 새로운 도메인과 팀에서 결과를 만들어 왔습니다.</p>
+    </div>
+    <div class="archive reveal">
+      <div class="archive-bg"><img src="assets/archive.png" alt="" /></div>
+      <div class="archive-in">
+        <h3>Timeline</h3>
+        <div class="note">2025.08 ~ 현재 · AI DATA (구 데이타이음) 재직중</div>
+        <div class="tl">
+          <div class="tl-item"><div class="tl-year">2025 ~</div><div class="tl-body"><div class="t">AI DATA</div><div class="c">세종온라인학교 · 소상공인 데이터플랫폼 · Life OS.ONE · 사내 AI 자동화</div></div></div>
+          <div class="tl-item"><div class="tl-year">2022</div><div class="tl-body"><div class="t">딥세일즈 · 덴컴 · 에임메드</div><div class="c">AI 고객 매칭 · 음성인식 치과 차트 · 간병인 매칭</div></div></div>
+          <div class="tl-item"><div class="tl-year">2021</div><div class="tl-body"><div class="t">인플루언서 마케팅 ERP · 가천대 총동문회 · 축구파이 App</div><div class="c">윈썸 · 가천대 · 올리브크리에이티브</div></div></div>
+          <div class="tl-item"><div class="tl-year">2020</div><div class="tl-body"><div class="t">국민은행 비대면 채널 · P2P 펀딩 · 인플루언서 플랫폼</div><div class="c">인픽스 · 머스트핀테크 · 키스톤마케팅</div></div></div>
+          <div class="tl-item"><div class="tl-year">2018 ~ 2019</div><div class="tl-body"><div class="t">기아자동차 글로벌사이트 · 딜카 App</div><div class="c">인픽스 · 기아자동차 · 현대캐피탈</div></div></div>
+          <div class="tl-item"><div class="tl-year">2015 ~ 2017</div><div class="tl-body"><div class="t">보험사 ERP · 수수료 · 보장분석 시스템</div><div class="c">엘자산 · 한솔교육 · 노블리지 · A+에셋 · 처브라이프</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="sec-tag">About</div>
+      <h2>일하는 방식과 도구</h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-card reveal">
+        <h3>절대긍정, 결과로 답하는 기획자</h3>
+        <p>주도적으로 일하고, 자료를 근거로 <b>논리적·데이터 중심</b>으로 판단합니다. 토론은 즐기되 의사결정은 빠르게 내립니다. 니즈를 반영해 <b>프론트와 백엔드를 함께 설계·기획·고도화</b>하고, 여러 프로젝트의 가용 리소스를 관리하며, 운영에서도 개선점을 찾아 과제로 만듭니다.</p>
+        <p>AI가 빠르게 많은 일을 대신하는 시대일수록, <b>팀 안에서 신뢰를 만들고 끝까지 책임지는 태도</b>가 사람의 몫이라 믿습니다. 불편하고 어려운 환경에서도 목표를 잃지 않고 결과를 만들기 위해 긍정을 잃지 않으려 합니다.</p>
+      </div>
+      <div class="about-card reveal">
+        <div class="skill-group">
+          <div class="lbl">AI · 자동화</div>
+          <div class="pills">
+            <span class="pill hot">Claude Code</span>
+            <span class="pill hot">AI 활용 기획</span>
+            <span class="pill hot">프롬프트 엔지니어링</span>
+            <span class="pill hot">LLM Wiki</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="lbl">기획 · 디자인</div>
+          <div class="pills">
+            <span class="pill">Figma</span><span class="pill">Axure</span><span class="pill">Notion (SSoT)</span>
+            <span class="pill">Prototype</span><span class="pill">Jira</span>
+          </div>
+        </div>
+        <div class="skill-group">
+          <div class="lbl">문서 · 분석</div>
+          <div class="pills">
+            <span class="pill">데이터 분석</span><span class="pill">대시보드 기획</span>
+            <span class="pill">Excel</span><span class="pill">PowerPoint</span><span class="pill">Google Docs</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="contact">
+  <div class="wrap reveal">
+    <h2>함께 한다면,<br /><span class="grad-text">결과로 대답하겠습니다.</span></h2>
+    <p>회사와 고객의 니즈를 정확히 확보해, AI 활용·경쟁사 분석·도메인 분석 등 최선의 방식으로 최고의 결과를 가져오겠습니다.</p>
+    <a class="mail" href="mailto:dahwan.oh@gmail.com">✉ dahwan.oh@gmail.com</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>© 2026 오다환 · Service Planner</div>
+    <div>AI DATA (구 데이타이음) · 전략기획팀 책임연구원</div>
+  </div>
+</footer>
+
+<script>
+  // scroll reveal
+  const io=new IntersectionObserver((es)=>{
+    es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
+  },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
