@@ -106,6 +106,26 @@
     box-shadow:0 24px 60px -30px rgba(124,180,255,.4)}
   .card.feature{grid-column:span 6}
   .card.wide{grid-column:span 12}
+
+  /* AI section — asymmetric bento (large main + stacked side), flexbox */
+  .ai-split{display:flex;gap:22px;align-items:stretch}
+  .ai-main{flex:1.1 1 0;min-width:0}
+  .ai-side{flex:.9 1 0;display:flex;flex-direction:column;gap:22px;min-width:0}
+  .ai-side>.card{flex:1;min-height:0}
+  .card.compact{flex-direction:row;align-items:stretch}
+  .card.compact .card-media{flex:0 0 41%;aspect-ratio:auto}
+  .card.compact .card-media img{object-position:center}
+  .card.compact .card-body{padding:22px 24px;justify-content:center}
+  .card.compact h3{font-size:1.14rem;line-height:1.32}
+  .card.compact .card-meta{margin-bottom:11px}
+  .card.compact .desc{margin-top:11px;font-size:.9rem}
+  .card.compact .tags{margin-top:14px}
+  @media(max-width:900px){
+    .ai-split{flex-direction:column}
+    .ai-main,.ai-side,.ai-side>.card{flex:0 0 auto}
+    .card.compact{flex-direction:column}
+    .card.compact .card-media{flex:0 0 auto;aspect-ratio:16/10}
+  }
   .card-media{position:relative;aspect-ratio:16/10;overflow:hidden;background:var(--bg-2)}
   .card-media img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease}
   .card:hover .card-media img{transform:scale(1.05)}
@@ -255,9 +275,9 @@
       <h2>AI를 활용하고, AI 제품을 기획합니다</h2>
       <p>AI를 유행어로 소비하지 않습니다. 매일의 기획 도구로 쓰고, AI가 핵심인 제품을 직접 설계해 왔습니다.</p>
     </div>
-    <div class="grid">
+    <div class="ai-split">
 
-      <article class="card feature reveal">
+      <article class="card feature reveal ai-main">
         <div class="card-media"><img src="assets/life-os-one.png" alt="Life OS.ONE" /></div>
         <div class="card-body">
           <div class="card-meta"><span class="chip ai">AI 프로덕트</span><span>AI DATA</span><span>·</span><span>2026.05 ~</span></div>
@@ -278,38 +298,37 @@
         </div>
       </article>
 
-      <article class="card feature reveal">
-        <div class="card-media"><img src="assets/ai-automation.png" alt="사내 AI 자동화" /></div>
-        <div class="card-body">
-          <div class="card-meta"><span class="chip ai">AI 워크플로</span><span>AI DATA</span><span>·</span><span>2025.08 ~</span></div>
-          <h3>사내 기획 자동화 — wireFrame Automation</h3>
-          <div class="role">AI 기반 기획 생산성 체계 구축 · 기획 100%</div>
-          <p class="desc"><b>Claude Code로 HTML 와이어프레임을 직접 생성</b>해 Figma로 연동하는 워크플로를 구축. 사람과 AI가 함께 읽는 <b>단일 기준문서(LLM Wiki)</b> 체계로 여러 공공 SI 프로젝트를 <b>동시에 소화하는 생산성</b>을 만들었습니다.</p>
-          <div class="tags"><span>Claude Code</span><span>LLM Wiki</span><span>자동화</span><span>Figma</span></div>
-        </div>
-      </article>
+      <div class="ai-side">
+        <article class="card compact reveal">
+          <div class="card-media"><img src="assets/ai-automation.png" alt="사내 AI 자동화" /></div>
+          <div class="card-body">
+            <div class="card-meta"><span class="chip ai">AI 워크플로</span><span>AI DATA</span><span>·</span><span>2025.08 ~</span></div>
+            <h3>사내 기획 자동화</h3>
+            <p class="desc"><b>Claude Code로 와이어프레임을 직접 생성</b>·Figma 연동. <b>LLM Wiki</b> 문서 체계로 다중 프로젝트를 동시에 소화. 기획 100%.</p>
+            <div class="tags"><span>Claude Code</span><span>LLM Wiki</span><span>자동화</span></div>
+          </div>
+        </article>
 
-      <article class="card feature reveal">
-        <div class="card-media"><img src="assets/deepsales.png" alt="딥세일즈" /></div>
-        <div class="card-body">
-          <div class="card-meta"><span class="chip ai">AI 매칭</span><span>딥세일즈</span><span>·</span><span>2022.07 ~</span></div>
-          <h3>딥세일즈 — B2B AI 고객 매칭</h3>
-          <div class="role">글로벌 데이터 서비스 · PM 100% · WireFrame 30%</div>
-          <p class="desc"><b>인공지능 학습으로 회원사에 가장 적합한 고객을 매칭</b>하는 글로벌 서비스. 글로벌 데이터 확보가 핵심이라 데이터·개발과 밀접히 협업했고, 미국 기준의 <b>글로벌 UXUI 스탠다드</b>에 맞춰 설계했습니다.</p>
-          <div class="tags"><span>AI 매칭</span><span>글로벌 UXUI</span><span>Axure</span><span>Figma</span></div>
-        </div>
-      </article>
+        <article class="card compact reveal">
+          <div class="card-media"><img src="assets/deepsales.png" alt="딥세일즈" /></div>
+          <div class="card-body">
+            <div class="card-meta"><span class="chip ai">AI 매칭</span><span>딥세일즈</span><span>·</span><span>2022.07 ~</span></div>
+            <h3>딥세일즈 — B2B AI 고객 매칭</h3>
+            <p class="desc"><b>AI 학습으로 회원사에 최적 고객을 매칭</b>하는 글로벌 서비스. 미국 <b>글로벌 UXUI 스탠다드</b>로 설계. PM 100%.</p>
+            <div class="tags"><span>AI 매칭</span><span>글로벌 UXUI</span><span>Axure</span></div>
+          </div>
+        </article>
 
-      <article class="card feature reveal">
-        <div class="card-media"><img src="assets/dencomm.png" alt="덴컴 음성인식 치과 차트" /></div>
-        <div class="card-body">
-          <div class="card-meta"><span class="chip ai">음성 AI</span><span>덴컴</span><span>·</span><span>2022.09 ~ 2023.06</span></div>
-          <h3>음성인식 치과 차트 시스템</h3>
-          <div class="role">PM 100% · WireFrame 100%</div>
-          <p class="desc"><b>OpenAI Whisper 엔진 기반 음성인식</b>으로, 소규모 치과에서 추가 인력 없이 <b>의사 단독 차팅</b>이 가능하도록 기능을 기획. 현업 종사자의 사용성 증대에 초점을 맞췄습니다.</p>
-          <div class="tags"><span>OpenAI Whisper</span><span>음성인식</span><span>헬스케어</span><span>Axure</span></div>
-        </div>
-      </article>
+        <article class="card compact reveal">
+          <div class="card-media"><img src="assets/dencomm.png" alt="덴컴 음성인식 치과 차트" /></div>
+          <div class="card-body">
+            <div class="card-meta"><span class="chip ai">음성 AI</span><span>덴컴</span><span>·</span><span>2022.09 ~ 2023.06</span></div>
+            <h3>음성인식 치과 차트 시스템</h3>
+            <p class="desc"><b>OpenAI Whisper 음성인식</b>으로 소규모 치과의 <b>의사 단독 차팅</b>을 구현. PM·WireFrame 100%.</p>
+            <div class="tags"><span>OpenAI Whisper</span><span>헬스케어</span><span>Axure</span></div>
+          </div>
+        </article>
+      </div>
 
     </div>
   </div>
