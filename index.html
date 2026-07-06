@@ -164,8 +164,13 @@
   .skill-group:last-child{margin-bottom:0}
   .skill-group .lbl{font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:12px}
   .pills{display:flex;gap:9px;flex-wrap:wrap}
-  .pill{font-size:.86rem;padding:8px 15px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted)}
+  .pill{display:inline-flex;align-items:center;font-size:.86rem;padding:6px 8px 6px 15px;border-radius:999px;border:1px solid var(--border);background:rgba(255,255,255,.03);color:var(--muted)}
   .pill.hot{border-color:transparent;background:linear-gradient(100deg,rgba(84,224,230,.16),rgba(164,136,255,.16));color:var(--ink);font-weight:600}
+  .pill .lv{margin-left:9px;font-size:.68rem;font-weight:800;padding:2px 7px;border-radius:6px;line-height:1.35}
+  .pill .lv.s{color:#08131a;background:linear-gradient(100deg,var(--cyan),var(--violet))}
+  .pill .lv.m{color:var(--muted);background:rgba(255,255,255,.07)}
+  .skill-note{font-size:.76rem;color:var(--dim);margin-top:16px}
+  .skill-note b{color:var(--cyan)}
   @media(max-width:860px){.about-grid{grid-template-columns:1fr}}
 
   /* CONTACT */
@@ -479,26 +484,34 @@
         <div class="skill-group">
           <div class="lbl">AI · 자동화</div>
           <div class="pills">
-            <span class="pill hot">Claude Code</span>
-            <span class="pill hot">AI 활용 기획</span>
-            <span class="pill hot">프롬프트 엔지니어링</span>
-            <span class="pill hot">LLM Wiki</span>
+            <span class="pill hot">Claude Code <span class="lv s">상</span></span>
+            <span class="pill hot">AI 활용 기획 <span class="lv s">상</span></span>
+            <span class="pill hot">프롬프트 엔지니어링 <span class="lv s">상</span></span>
+            <span class="pill hot">LLM Wiki <span class="lv s">상</span></span>
           </div>
         </div>
         <div class="skill-group">
           <div class="lbl">기획 · 디자인</div>
           <div class="pills">
-            <span class="pill">Figma</span><span class="pill">Axure</span><span class="pill">Notion (SSoT)</span>
-            <span class="pill">Prototype</span><span class="pill">Jira</span>
+            <span class="pill">Figma <span class="lv s">상</span></span>
+            <span class="pill">Axure <span class="lv s">상</span></span>
+            <span class="pill">Notion <span class="lv s">상</span></span>
+            <span class="pill">Prototype <span class="lv m">중</span></span>
+            <span class="pill">Jira <span class="lv m">중</span></span>
           </div>
         </div>
         <div class="skill-group">
           <div class="lbl">문서 · 분석</div>
           <div class="pills">
-            <span class="pill">데이터 분석</span><span class="pill">대시보드 기획</span>
-            <span class="pill">Excel</span><span class="pill">PowerPoint</span><span class="pill">Google Docs</span>
+            <span class="pill">Excel <span class="lv s">상</span></span>
+            <span class="pill">PowerPoint <span class="lv s">상</span></span>
+            <span class="pill">Google Docs <span class="lv s">상</span></span>
+            <span class="pill">대시보드 기획 <span class="lv s">상</span></span>
+            <span class="pill">데이터 분석 <span class="lv m">중</span></span>
+            <span class="pill">Word <span class="lv m">중</span></span>
           </div>
         </div>
+        <div class="skill-note">숙련도 · <b>상</b> 실무 능숙 / <b>중</b> 활용 가능</div>
       </div>
     </div>
   </div>
