@@ -184,14 +184,17 @@
   footer{border-top:1px solid var(--border);padding:34px 0;color:var(--dim);font-size:.85rem}
   .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
-  /* real-deliverable thumbnails */
-  .shots{margin-top:22px}
-  .shots-label{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+  /* real-deliverable thumbnails — framed panel */
+  .shots{margin-top:22px;padding:16px 16px 12px;border-radius:14px;
+    background:rgba(0,0,0,.24);border:1px solid var(--border);box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+  .shots-label{font-size:.74rem;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:13px;display:flex;align-items:center;gap:8px}
   .shots-label::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
   .shots-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
-  .thumb{flex:0 0 auto;width:76px;height:134px;border-radius:11px;overflow:hidden;border:1px solid var(--border);background:var(--bg-2);cursor:pointer;padding:0;transition:.2s;position:relative}
-  .thumb:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 12px 26px -14px rgba(84,224,230,.5)}
-  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+  .thumb{flex:0 0 auto;width:76px;height:134px;border-radius:10px;overflow:hidden;border:1px solid var(--border-hi);background:var(--bg-2);cursor:pointer;padding:0;transition:.2s;position:relative;box-shadow:0 6px 16px -8px rgba(0,0,0,.6)}
+  .thumb::after{content:"";position:absolute;inset:0;border-radius:10px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06);pointer-events:none}
+  .thumb:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 14px 28px -12px rgba(84,224,230,.5)}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;filter:brightness(.94) contrast(1.02);transition:filter .2s}
+  .thumb:hover img{filter:none}
   .thumb.land{width:200px;height:124px}
 
   /* lightbox */
