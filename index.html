@@ -179,6 +179,27 @@
   footer{border-top:1px solid var(--border);padding:34px 0;color:var(--dim);font-size:.85rem}
   .foot-in{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
 
+  /* real-deliverable thumbnails */
+  .shots{margin-top:22px}
+  .shots-label{font-size:.74rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+  .shots-label::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+  .shots-row{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+  .thumb{flex:0 0 auto;width:76px;height:134px;border-radius:11px;overflow:hidden;border:1px solid var(--border);background:var(--bg-2);cursor:pointer;padding:0;transition:.2s;position:relative}
+  .thumb:hover{border-color:var(--cyan);transform:translateY(-3px);box-shadow:0 12px 26px -14px rgba(84,224,230,.5)}
+  .thumb img{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+
+  /* lightbox */
+  .lb{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;background:rgba(4,5,8,.92);backdrop-filter:blur(8px)}
+  .lb.open{display:flex}
+  .lb-img{max-width:92vw;max-height:86vh;border-radius:12px;box-shadow:0 40px 90px -20px #000;border:1px solid var(--border-hi)}
+  .lb button{color:#fff;background:var(--panel-strong);border:1px solid var(--border-hi);cursor:pointer;transition:.2s;backdrop-filter:blur(6px)}
+  .lb button:hover{border-color:var(--cyan);background:rgba(84,224,230,.12)}
+  .lb-close{position:absolute;top:20px;right:24px;font-size:1.5rem;line-height:1;width:46px;height:46px;border-radius:50%}
+  .lb-nav{position:absolute;top:50%;transform:translateY(-50%);font-size:1.9rem;line-height:1;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .lb-prev{left:24px}.lb-next{right:24px}
+  .lb-count{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);color:var(--muted);font-size:.88rem;background:var(--panel);padding:7px 15px;border-radius:999px;border:1px solid var(--border);pointer-events:none}
+  @media(max-width:600px){.lb-nav{width:44px;height:44px;font-size:1.5rem}.lb-prev{left:10px}.lb-next{right:10px}.lb-close{top:12px;right:14px}}
+
   /* reveal */
   .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
   .reveal.in{opacity:1;transform:none}
@@ -235,6 +256,17 @@
           <div class="role">자체 신규 프로덕트 · 0→1 기획 · PM/기획 100%</div>
           <p class="desc">실생활 데이터를 근거로 아침·점심·저녁을 대화로 잇는 <b>LLM 기반 생활 비서 앱</b>을 0에서 기획. 메인을 <b>대화형 타임라인 UX</b>로 설계하고, Figma·Notion을 단일 기준(SSoT)으로 운영해 <b>클로즈 베타 시연</b>까지 이끌었습니다.</p>
           <div class="tags"><span>대화형 UX</span><span>LLM</span><span>Figma</span><span>Notion SSoT</span><span>Claude Code</span></div>
+          <div class="shots" data-gallery>
+            <div class="shots-label">실제 화면 · 클릭하면 확대</div>
+            <div class="shots-row">
+              <button class="thumb" data-src="assets/work/lifeosone/home.png"><img src="assets/work/lifeosone/home.png" alt="Life OS.ONE 대화형 메인 화면" loading="lazy" /></button>
+              <button class="thumb" data-src="assets/work/lifeosone/order-menu.png"><img src="assets/work/lifeosone/order-menu.png" alt="Life OS.ONE 주문 메뉴 화면" loading="lazy" /></button>
+              <button class="thumb" data-src="assets/work/lifeosone/checkout.png"><img src="assets/work/lifeosone/checkout.png" alt="Life OS.ONE 결제 화면" loading="lazy" /></button>
+              <button class="thumb" data-src="assets/work/lifeosone/reservation.png"><img src="assets/work/lifeosone/reservation.png" alt="Life OS.ONE 예약 확정 화면" loading="lazy" /></button>
+              <button class="thumb" data-src="assets/work/lifeosone/schedule.png"><img src="assets/work/lifeosone/schedule.png" alt="Life OS.ONE 일정 타임라인 화면" loading="lazy" /></button>
+              <button class="thumb" data-src="assets/work/lifeosone/notifications.png"><img src="assets/work/lifeosone/notifications.png" alt="Life OS.ONE 알림 센터 화면" loading="lazy" /></button>
+            </div>
+          </div>
         </div>
       </article>
 
@@ -466,12 +498,42 @@
   </div>
 </footer>
 
+<!-- lightbox -->
+<div class="lb" id="lb" aria-hidden="true" role="dialog" aria-label="산출물 이미지 보기">
+  <button class="lb-close" aria-label="닫기">&times;</button>
+  <button class="lb-nav lb-prev" aria-label="이전">&lsaquo;</button>
+  <img class="lb-img" id="lbImg" src="" alt="" />
+  <button class="lb-nav lb-next" aria-label="다음">&rsaquo;</button>
+  <div class="lb-count" id="lbCount"></div>
+</div>
+
 <script>
   // scroll reveal
   const io=new IntersectionObserver((es)=>{
     es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}});
   },{threshold:.12,rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // lightbox gallery
+  (function(){
+    const lb=document.getElementById('lb'), lbImg=document.getElementById('lbImg'), lbCount=document.getElementById('lbCount');
+    let items=[], idx=0;
+    function render(){ lbImg.src=items[idx].src; lbImg.alt=items[idx].alt; lbCount.textContent=(idx+1)+' / '+items.length; }
+    function open(g,start){ items=[...g.querySelectorAll('.thumb')].map(t=>({src:t.dataset.src, alt:t.querySelector('img').alt})); idx=start; render(); lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); }
+    function close(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); lbImg.src=''; }
+    function nav(d){ idx=(idx+d+items.length)%items.length; render(); }
+    document.querySelectorAll('[data-gallery]').forEach(g=>{
+      g.querySelectorAll('.thumb').forEach((t,i)=>t.addEventListener('click',()=>open(g,i)));
+    });
+    lb.querySelector('.lb-close').addEventListener('click',close);
+    lb.querySelector('.lb-prev').addEventListener('click',e=>{e.stopPropagation();nav(-1);});
+    lb.querySelector('.lb-next').addEventListener('click',e=>{e.stopPropagation();nav(1);});
+    lb.addEventListener('click',e=>{ if(e.target===lb) close(); });
+    document.addEventListener('keydown',e=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') close(); else if(e.key==='ArrowRight') nav(1); else if(e.key==='ArrowLeft') nav(-1);
+    });
+  })();
 </script>
 </body>
 </html>
